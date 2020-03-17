@@ -10,14 +10,14 @@ import (
 // IPSeq is a channel of discrete IPv4 address sequences.
 type IPSeq chan net.IP
 
-// MakeIPSeq returns a new IPSeq. The given string s is parsed and the channel
+// MakeIPSeq returns a new IPSeq. Each given string s is parsed and the channel
 // starts filling with the individual IPv4 addresses in a separate goroutine
 // immediately.
-// The string s contains comma-separated ranges, and each range can be expressed
+// Each string s contains comma-separated ranges, and each range can be expressed
 // in either CIDR format or as a hyphenated interval.
-func MakeIPSeq(s string) IPSeq {
+func MakeIPSeq(s ...string) IPSeq {
 	q := make(IPSeq)
-	q.generate(s)
+	q.generate(s...)
 	return q
 }
 
@@ -40,13 +40,15 @@ func Uint32ToIP(u uint32) net.IP {
 	return net.IPv4(uint8(u>>24), uint8(u>>16), uint8(u>>8), uint8(u))
 }
 
-// generate dispatches a goroutine to parse each range in the comma-separated
+// generate dispatches a goroutine to parse each range in each comma-separated
 // string s.
-func (q IPSeq) generate(s string) {
+func (q IPSeq) generate(s ...string) {
 	go func() {
-		sub := strings.Split(s, ",")
-		for _, r := range sub {
-			q.parse(r)
+		for _, t := range s {
+			sub := strings.Split(t, ",")
+			for _, r := range sub {
+				q.parse(r)
+			}
 		}
 		close(q)
 	}()
