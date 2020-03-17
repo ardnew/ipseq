@@ -7,8 +7,7 @@ import (
 )
 
 func ExampleMakeIPSeq() {
-	seq := ipseq.MakeIPSeq("192.168.1.0/30,10.0.0.254-10.0.1.1")
-	for ip := range seq {
+	for ip := range ipseq.MakeIPSeq("192.168.1.0/30,10.0.0.254-10.0.1.1", "8.8.8.8") {
 		fmt.Printf("%s\n", ip)
 	}
 	// Output:
@@ -20,4 +19,5 @@ func ExampleMakeIPSeq() {
 	// 10.0.0.255
 	// 10.0.1.0
 	// 10.0.1.1
+	// 8.8.8.8
 }
