@@ -3,9 +3,15 @@
 package ipseq
 
 import (
+	"fmt"
+	"io"
+	"io/ioutil"
 	"net"
 	"strings"
 )
+
+// Errors contains the io.Writer where errors will be written.
+var Errors io.Writer = ioutil.Discard
 
 // IPSeq is a channel of discrete IPv4 address sequences.
 type IPSeq chan net.IP
@@ -85,5 +91,7 @@ func (q IPSeq) parse(s string) {
 		for i := lo; i <= hi; i++ {
 			q <- Uint32ToIP(i)
 		}
+	} else {
+		fmt.Fprintf(Errors, "invalid range: %q", s)
 	}
 }
