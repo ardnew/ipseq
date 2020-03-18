@@ -2,11 +2,15 @@ package ipseq_test
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/ardnew/ipseq"
 )
 
-func ExampleMakeIPSeq() {
+var errors = os.Stderr
+
+func Example() {
+	ipseq.Errors = errors
 	for ip := range ipseq.Seq("192.168.1.0/30,10.0.0.254-10.0.1.1", "8.8.8.8") {
 		fmt.Printf("%s\n", ip)
 	}
