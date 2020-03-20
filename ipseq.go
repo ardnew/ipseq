@@ -8,7 +8,23 @@ import (
 	"io/ioutil"
 	"net"
 	"strings"
+
+	"github.com/ardnew/version"
 )
+
+func init() {
+	version.ChangeLog = []version.Change{{
+		Package: "ipseq",
+		Version: "0.2.3",
+		Date:    "2020 Mar 19",
+		Description: []string{
+			"added version support",
+		},
+	}}
+}
+
+func Version() string { return version.String() }
+func PrintChangeLog() { version.PrintChangeLog() }
 
 // Errors contains the io.Writer where errors will be written.
 var Errors io.Writer = ioutil.Discard // /dev/null by default keeps output tidy
